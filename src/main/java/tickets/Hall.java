@@ -10,23 +10,23 @@ class Hall {
         A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     }
 
-    Hall(int numberOfRows, int seatsPerRow) throws RuntimeException {  // TODO: ???
+    Hall(int numberOfRows, int seatsPerRow) throws IllegalArgumentException {  // TODO: ???
         setNumberOfRows(numberOfRows);
         setSeatsPerRow(seatsPerRow);
     }
 
-    private void setNumberOfRows(int numberOfRows) throws RuntimeException {
+    private void setNumberOfRows(int numberOfRows) throws IllegalArgumentException {
         if (numberOfRows < 1) {
-            throw new RuntimeException("Invalid value. Minimum value for number of rows is 1.");
+            throw new IllegalArgumentException("Invalid value. Minimum value for number of rows is 1.");
         }
         this.numberOfRows = numberOfRows;
     }
 
-    private void setSeatsPerRow(int seatsPerRow) throws RuntimeException {
+    private void setSeatsPerRow(int seatsPerRow) throws IllegalArgumentException {
         int maxRowValue = RowLabel.values().length;
 
         if (seatsPerRow < 1 || seatsPerRow > maxRowValue) {
-            throw new RuntimeException("Invalid value. The valid range of seats in a row is 1 to " + maxRowValue);
+            throw new IllegalArgumentException("Invalid value. The valid range of seats in a row is 1 to " + maxRowValue);
         }
 
         this.seatsPerRow = seatsPerRow;

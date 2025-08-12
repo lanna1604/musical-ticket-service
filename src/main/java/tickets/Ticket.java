@@ -41,7 +41,13 @@ class Ticket {
         return "Ticket {" +
                 "place = '" + this.place + '\'' +
                 ", price = " + this.price +
-                ", visitor = " + this.visitor +
+                ", visitor = " + visitorToString() +
                 '}';
+    }
+
+    private String visitorToString() {
+        return isSold() ?
+                "Visitor {name = '" + this.visitor.getName() + "', phone = '" + visitor.getPhone() + "'}" :
+                "null";
     }
 }

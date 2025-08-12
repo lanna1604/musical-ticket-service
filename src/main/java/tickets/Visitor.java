@@ -2,6 +2,7 @@ package tickets;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 class Visitor {
@@ -9,6 +10,7 @@ class Visitor {
 
     private String name;
     private String phone;
+    ArrayList<Ticket> tickets = new ArrayList<>();
 
     Visitor(String name, String phone) {
         setName(name);
@@ -47,11 +49,24 @@ class Visitor {
         this.phone = trimmed;
     }
 
+    boolean buyTicket(Performance performance, String place) {
+        Ticket ticket = performance.getTicket(place);
+
+        if (ticket.bookFor(this)) {
+            tickets.add(ticket);
+
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public String toString() {
         return "Visitor {" +
-                "name = '" + name + '\'' +
-                ", phone = '" + phone + '\'' +
+                "name = '" + this.name + '\'' +
+                ", phone = '" + this.phone + '\'' +
+                ", tickets = " + this.tickets +
                 '}';
     }
 }
