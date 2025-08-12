@@ -2,7 +2,7 @@ package tickets;
 
 import java.util.ArrayList;
 
-public class Hall {
+class Hall {
     private int numberOfRows;
     private int seatsPerRow;
 
@@ -32,14 +32,14 @@ public class Hall {
         this.seatsPerRow = seatsPerRow;
     }
 
-    ArrayList<Ticket> generateTickets() {
+    ArrayList<Ticket> generateTickets(double price) {
         ArrayList<Ticket> tickets = new ArrayList<>();
         RowLabel[] rowLabels = RowLabel.values();
 
         for (int row = 1; row <= numberOfRows; row++) {
             for (int seat = 0; seat < seatsPerRow; seat++) {
-                String newTicketId = "" + row + rowLabels[seat];
-                tickets.add(new Ticket(newTicketId));
+                String place = "" + row + rowLabels[seat];
+                tickets.add(new Ticket(place, price));
             }
         }
 
