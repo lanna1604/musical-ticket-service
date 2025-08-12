@@ -5,14 +5,14 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-class Visitor {
+public class Visitor {
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10}$");
 
     private String name;
     private String phone;
     ArrayList<Ticket> tickets = new ArrayList<>();
 
-    Visitor(String name, String phone) {
+    public Visitor(String name, String phone) {
         setName(name);
         setPhone(phone);
     }
@@ -49,7 +49,7 @@ class Visitor {
         this.phone = trimmed;
     }
 
-    boolean buyTicket(Performance performance, String place) {
+    public boolean buyTicket(Performance performance, String place) {
         Ticket ticket = performance.getTicket(place);
 
         if (ticket.bookFor(this)) {

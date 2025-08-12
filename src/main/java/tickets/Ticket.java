@@ -14,9 +14,9 @@ class Ticket {
         return this.place;
     }
 
-    private void setPrice(double price) throws RuntimeException {
+    private void setPrice(double price) throws IllegalArgumentException {
         if (price < 0) {
-            throw new RuntimeException("Invalid value. Price can't be negative.");
+            throw new IllegalArgumentException("Invalid value. Price can't be negative.");
         }
 
         this.price = price;

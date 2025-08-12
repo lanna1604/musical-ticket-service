@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-class Performance {
+public class Performance {
     final static DateTimeFormatter START_AT_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     private Hall hall;
@@ -20,11 +20,11 @@ class Performance {
         this.tickets = hall.generateTickets(this.ticketPrice);
     }
 
-    private void setStartAt(String dateTime) throws RuntimeException {
+    private void setStartAt(String dateTime) {
         LocalDateTime startAt = LocalDateTime.parse(dateTime, START_AT_FORMATTER);
 
         if (startAt.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Invalid value. Start time can't be in the past.");
+            throw new IllegalArgumentException("Invalid value. Start time can't be in the past.");
         }
 
         this.startAt = startAt;
@@ -32,7 +32,7 @@ class Performance {
 
     private void setTicketPrice(double ticketPrice) {
         if (ticketPrice < 0) {
-            throw new RuntimeException("Invalid value. Ticket price can't be negative.");
+            throw new IllegalArgumentException("Invalid value. Ticket price can't be negative.");
         }
 
         this.ticketPrice = ticketPrice;
@@ -45,7 +45,7 @@ class Performance {
             }
         }
 
-        throw new RuntimeException("This place doesn't exist. Please check data.");
+        throw new IllegalArgumentException("This place doesn't exist. Please check data.");
     }
 
     String getStartAt() {

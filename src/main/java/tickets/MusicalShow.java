@@ -2,11 +2,11 @@ package tickets;
 
 import java.util.ArrayList;
 
-class MusicalShow {
+public class MusicalShow {
     String title;
     ArrayList<Performance> performances = new ArrayList<>();
 
-    MusicalShow(String title) {
+    public MusicalShow(String title) {
         setTitle(title);
     }
 
@@ -15,19 +15,19 @@ class MusicalShow {
         this.title = title;
     }
 
-    void createPerformance(Hall hall, String dateTime, double ticketPrice) {
+    public void createPerformance(Hall hall, String dateTime, double ticketPrice) {
         Performance performance = new Performance(hall, dateTime, ticketPrice);
         performances.add(performance);
     }
 
-    Performance getPerformance(String dateTime) {
+    public Performance getPerformance(String dateTime) {
         for (Performance performance : performances) {
             if (performance.getStartAt().equals(dateTime)) {
                 return performance;
             }
         }
 
-        throw new RuntimeException("Performance with this start date doesn't exist. Please check data.");
+        throw new IllegalArgumentException("Performance with this start date doesn't exist. Please check data.");
     }
 
     @Override

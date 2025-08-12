@@ -2,7 +2,7 @@ package tickets;
 
 import java.util.ArrayList;
 
-class Hall {
+public class Hall {
     private int numberOfRows;
     private int seatsPerRow;
 
@@ -10,7 +10,7 @@ class Hall {
         A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     }
 
-    Hall(int numberOfRows, int seatsPerRow) throws IllegalArgumentException {  // TODO: ???
+    public Hall(int numberOfRows, int seatsPerRow) {
         setNumberOfRows(numberOfRows);
         setSeatsPerRow(seatsPerRow);
     }
