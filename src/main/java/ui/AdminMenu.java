@@ -4,17 +4,12 @@ import tickets.Hall;
 import tickets.MusicalShow;
 import tickets.TicketService;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class AdminMenu {
+public class AdminMenu extends Menu {
     private final TicketService service;
     private final Scanner scanner;
-
-    // ANSI colors
-    private static final String RESET = "\u001B[0m";
-    private static final String RED = "\u001B[31m";
-    private static final String GREEN = "\u001B[32m";
-    private static final String CYAN = "\u001B[36m";
 
     public AdminMenu(TicketService service, Scanner scanner) {
         this.service = service;
@@ -25,19 +20,18 @@ public class AdminMenu {
         String choice;
 
         do {
-            System.out.println(CYAN + "\n=== Admin Menu ===" + RESET);
-            System.out.println("Please select an action:");
-            System.out.println("0. Back to Main Menu");
-            System.out.println("1. Create Hall");
-            System.out.println("2. Create Musical Show");
-            System.out.println("3. Create Performance");
-
+            printMenuHeader("Admin Menu");
+            printMenuOptions("Please select an action", List.of(
+                    "Back to Main Menu",
+                    "Create Hall",
+                    "Create Musical Show",
+                    "Create Performance"
+            ));
             System.out.print("Your choice: ");
             choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "0" -> {
-                }
+                case "0" -> {}
                 case "1" -> createHall();
                 case "2" -> createMusicalShow();
                 case "3" -> createPerformance();
@@ -47,7 +41,7 @@ public class AdminMenu {
     }
 
     private void createHall() {
-        System.out.println(CYAN + "\n--- Creation of Hall ---" + RESET);
+        printActionHeader("Creation of Hall");
 
         while (true) {
             try {
@@ -59,7 +53,8 @@ public class AdminMenu {
 
                 Hall hall = service.createHall(numberOfRows, seatsPerRow);
 
-                System.out.println(GREEN + "Hall created successfully.\n" + hall + RESET);
+                System.out.println(GREEN + "Hall created successfully." + RESET);
+                System.out.println(YELLOW + hall + RESET);
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
@@ -68,7 +63,7 @@ public class AdminMenu {
     }
 
     private void createMusicalShow() {
-        System.out.println(CYAN + "\n--- Creation of Musical Show ---" + RESET);
+        printActionHeader("Creation of Musical Show");
 
         while (true) {
             try {
@@ -77,18 +72,13 @@ public class AdminMenu {
 
                 MusicalShow show = service.createMusicalShow(title);
 
-                System.out.println(GREEN + "Musical Show created successfully.\n" + show + RESET);
+                System.out.println(GREEN + "Musical Show created successfully." + RESET);
+                System.out.println(YELLOW + show + RESET);
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
             }
         }
-
-
-        System.out.println("createMusicalShow");
-        String title = scanner.nextLine().trim();
-
-        service.createMusicalShow(title);
     }
 
     private void createPerformance() {
@@ -97,9 +87,9 @@ public class AdminMenu {
             return;
         }
 
-        System.out.println(CYAN + "\n--- Creation of Performance ---" + RESET);
+        printActionHeader("Creation of Performance");
 
-        while(true) {
+        while (true) {
             try {
 //                MusicalShow show1 = selectShow();
 //        MusicalShow show1 = new MusicalShow("Test Show 1");
