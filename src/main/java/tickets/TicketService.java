@@ -7,8 +7,8 @@ public class TicketService {
     private ArrayList<MusicalShow> shows = new ArrayList<>();
     private ArrayList<Performance> performances = new ArrayList<>();
 
-    public Hall createHall(int numberOfRows, int seatsPerRow) {
-        Hall hall = new Hall(numberOfRows, seatsPerRow);
+    public Hall createHall(String title, int numberOfRows, int seatsPerRow) {
+        Hall hall = new Hall(title, numberOfRows, seatsPerRow);
         halls.add(hall);
 
         return hall;

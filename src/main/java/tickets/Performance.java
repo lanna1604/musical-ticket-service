@@ -2,10 +2,12 @@ package tickets;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Performance {
-    final static DateTimeFormatter START_AT_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    public final static String START_AT_PATTERN = "dd.MM.yyyy HH:mm";
+    private final static DateTimeFormatter START_AT_FORMATTER = DateTimeFormatter.ofPattern(START_AT_PATTERN);
 
     private Hall hall;
     private LocalDateTime startAt;
@@ -21,13 +23,17 @@ public class Performance {
     }
 
     private void setStartAt(String dateTime) {
-        LocalDateTime startAt = LocalDateTime.parse(dateTime, START_AT_FORMATTER);
+        try {
+            LocalDateTime startAt = LocalDateTime.parse(dateTime, START_AT_FORMATTER);
 
-        if (startAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Invalid value. Start time can't be in the past.");
+            if (startAt.isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("Invalid value. Start time can't be in the past.");
+            }
+
+            this.startAt = startAt;
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Please use pattern: " + START_AT_PATTERN);
         }
-
-        this.startAt = startAt;
     }
 
     private void setTicketPrice(double ticketPrice) {

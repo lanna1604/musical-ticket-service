@@ -3,6 +3,7 @@ package tickets;
 import java.util.ArrayList;
 
 public class Hall {
+    private String title;
     private int numberOfRows;
     private int seatsPerRow;
 
@@ -10,9 +11,19 @@ public class Hall {
         A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     }
 
-    public Hall(int numberOfRows, int seatsPerRow) {
+    public Hall(String title, int numberOfRows, int seatsPerRow) {
+        setTitle(title);
         setNumberOfRows(numberOfRows);
         setSeatsPerRow(seatsPerRow);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    private void setTitle(String title) {
+        //TODO: validation
+        this.title = title;
     }
 
     private void setNumberOfRows(int numberOfRows) throws IllegalArgumentException {
@@ -49,8 +60,9 @@ public class Hall {
     @Override
     public String toString() {
         return "Hall {" +
-                "numberOfRows = " + numberOfRows +
-                ", seatsPerRow = " + seatsPerRow +
+                "title = " + this.title +
+                ", numberOfRows = " + this.numberOfRows +
+                ", seatsPerRow = " + this.seatsPerRow +
                 '}';
     }
 }

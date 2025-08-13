@@ -2,8 +2,11 @@ package ui;
 
 import tickets.Hall;
 import tickets.MusicalShow;
+import tickets.Performance;
 import tickets.TicketService;
 
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,13 +48,16 @@ public class AdminMenu extends Menu {
 
         while (true) {
             try {
+                System.out.print("Title: ");
+                String title = scanner.nextLine().trim();
+
                 System.out.print("Number of rows: ");
                 int numberOfRows = Integer.parseInt(scanner.nextLine());
 
                 System.out.print("Seats per row: ");
                 int seatsPerRow = Integer.parseInt(scanner.nextLine());
 
-                Hall hall = service.createHall(numberOfRows, seatsPerRow);
+                Hall hall = service.createHall(title, numberOfRows, seatsPerRow);
 
                 System.out.println(GREEN + "Hall created successfully." + RESET);
                 System.out.println(YELLOW + hall + RESET);
@@ -91,11 +97,19 @@ public class AdminMenu extends Menu {
 
         while (true) {
             try {
-//                MusicalShow show1 = selectShow();
-//        MusicalShow show1 = new MusicalShow("Test Show 1");
-//        show1.createPerformance(hall1, "17.08.2025 12:35", 249.99);
+                MusicalShow show = selectShow();
+                Hall hall = selectHall();
+                scanner.nextLine();
 
+                System.out.print("Enter performance date and time (" + Performance.START_AT_PATTERN + "): ");
+                String dateTime = scanner.nextLine();
 
+                System.out.print("Enter ticket price: ");
+                double price = Double.parseDouble(scanner.nextLine());
+
+                show.createPerformance(hall, dateTime, price);
+                System.out.println(GREEN + "Performance created successfully." + RESET);
+                System.out.println(YELLOW + show + RESET);
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
@@ -103,7 +117,53 @@ public class AdminMenu extends Menu {
         }
     }
 
-//    private MusicalShow selectShow() {
-//        System.out.println("Please select a Musical Show");
-//    }
+    private MusicalShow selectShow() {
+        MusicalShow show;
+
+        ArrayList<MusicalShow> shows = service.getShows();
+        List<String> showTitles = shows.stream()
+                .map(MusicalShow::getTitle)
+                .toList();
+
+        while (true) {
+            try {
+                printMenuOptions("Please select a Musical Show", showTitles);
+                System.out.print("Your choice: ");
+                show = shows.get(scanner.nextInt());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(RED + "Please enter a valid number." + RESET);
+                scanner.nextLine();
+            } catch (Throwable e) {
+                System.out.println(RED + "Item not found. Please try again." + RESET);
+            }
+        }
+
+        return show;
+    }
+
+    private Hall selectHall() {
+        Hall hall;
+
+        ArrayList<Hall> halls = service.getHalls();
+        List<String> hallsTitles = halls.stream()
+                .map(Hall::getTitle)
+                .toList();
+
+        while (true) {
+            try {
+                printMenuOptions("Please select a Hall", hallsTitles);
+                System.out.print("Your choice: ");
+                hall = halls.get(scanner.nextInt());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(RED + "Please enter a valid number." + RESET);
+                scanner.nextLine();
+            } catch (Throwable e) {
+                System.out.println(RED + "Item not found. Please try again." + RESET);
+            }
+        }
+
+        return hall;
+    }
 }

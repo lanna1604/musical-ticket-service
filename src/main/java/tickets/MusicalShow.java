@@ -3,11 +3,15 @@ package tickets;
 import java.util.ArrayList;
 
 public class MusicalShow {
-    String title;
+    private String title;
     ArrayList<Performance> performances = new ArrayList<>();
 
     public MusicalShow(String title) {
         setTitle(title);
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     void setTitle(String title) {
