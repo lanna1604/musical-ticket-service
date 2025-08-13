@@ -17,17 +17,19 @@ public class MainMenu {
         do {
             System.out.println();
             System.out.println("=== Main Menu ===");
+            System.out.println("Please select your role:");
             System.out.println("(A)dmin");
             System.out.println("(V)isitor");
             System.out.println("(E)xit");
-            System.out.print("Choice: ");
+
+            System.out.print("Your choice: ");
             choice = scanner.nextLine().trim().toLowerCase();
 
             switch (choice) {
                 case "a" -> new AdminMenu(service, scanner).start();
                 case "v" -> new VisitorMenu(service, scanner).start();
                 case "e" -> System.out.println("Exiting...");
-                default -> System.out.println("Invalid choice! Try again.");
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         } while (!choice.equals("e"));
     }
