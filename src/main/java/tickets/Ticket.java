@@ -12,7 +12,7 @@ public class Ticket {
         this.price = performance.getTicketPrice();
     }
 
-    String getPlace() {
+    public String getPlace() {
         return this.place;
     }
 
@@ -20,7 +20,7 @@ public class Ticket {
         return this.performance.getMusicalShow();
     }
 
-    boolean isSold() {
+    public boolean isSold() {
         return this.visitor != null;
     }
 

@@ -2,6 +2,7 @@ package tickets;
 
 import java.util.ArrayList;
 
+// TODO - convert to Singleton
 public class TicketService {
     private ArrayList<Hall> halls = new ArrayList<>();
     private ArrayList<MusicalShow> shows = new ArrayList<>();
@@ -62,6 +63,7 @@ public class TicketService {
         Hall hall1 = this.createHall("Hall_1", 4, 3);
         Hall hall2 = this.createHall("Hall_2", 2, 5);
         Hall hall3 = this.createHall("Hall_3", 5, 10);
+        Hall hall4 = this.createHall("Big_Hall", 15, 26);
 
         MusicalShow show1 = this.createMusicalShow("Show_1");
         MusicalShow show2 = this.createMusicalShow("Show_2");
@@ -71,6 +73,7 @@ public class TicketService {
         Performance performance2_1 = this.createPerformance(show2, hall1, "18.08.2025 20:00", 300);
         Performance performance2_2 = this.createPerformance(show2, hall2, "20.08.2025 20:00", 300);
         Performance performance2_3 = this.createPerformance(show2, hall1, "30.08.2025 20:00", 300);
+        Performance performance2_4 = this.createPerformance(show2, hall4, "25.08.2025 21:30", 250);
 
         Visitor visitor1 = this.createVisitor("James Gosling", "1234567890");
         Visitor visitor2 = this.createVisitor("Darth Vader", "9876543210");

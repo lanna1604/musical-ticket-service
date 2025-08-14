@@ -68,10 +68,24 @@ public class ExistingVisitorMenu extends Menu {
         }
     }
 
-    // TODO - refactoring
     private String selectPlace(Performance performance) {
+        ArrayList<Ticket> tickets = performance.getTickets();
+        int numberOfSeats = performance.getHall().getSeatsPerRow();
+
+        System.out.println("\n--- Select Your Seat ---");
+
+        int i = 1;
+        for (Ticket ticket : tickets) {
+            System.out.printf("%s%-6s%s%s",
+                    ticket.isSold() ? RED : GREEN,
+                    ticket.getPlace(),
+                    (i++ % numberOfSeats == 0) ? "\n" : "",
+                    RESET);
+        }
+
         scanner.nextLine();
-        System.out.println("\nSelect a seat: ");
+        System.out.print("Your choice: ");
+
         return scanner.nextLine().trim();
     }
 }

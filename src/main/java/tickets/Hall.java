@@ -19,10 +19,6 @@ public class Hall {
         setSeatsPerRow(seatsPerRow);
     }
 
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
     public int getSeatsPerRow() {
         return seatsPerRow;
     }

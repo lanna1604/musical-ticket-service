@@ -94,9 +94,8 @@ public class Performance {
 
     @Override
     public String toString() {
-        return String.format("%s  |  del: %s  |  Hall: %s  |  Prise: %.2f€  |  %d of %d seat(s) available",
+        return String.format("%s  |  Hall: %s  |  Prise: %.2f€  |  %d of %d seat(s) available",
                 this.getStartAt(),
-                this.musicalShow.getTitle(),
                 this.hall.getTitle(),
                 this.ticketPrice,
                 getAvailableTickets().toArray().length,
