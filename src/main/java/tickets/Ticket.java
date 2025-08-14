@@ -1,25 +1,23 @@
 package tickets;
 
-class Ticket {
+public class Ticket {
     private final String place;
     private double price;
+    private Performance performance;
     private Visitor visitor;
 
-    Ticket(String place, double price) {
+    Ticket(Performance performance, String place) {
+        this.performance = performance;
         this.place = place;
-        setPrice(price);
+        this.price = performance.getTicketPrice();
     }
 
     String getPlace() {
         return this.place;
     }
 
-    private void setPrice(double price) throws IllegalArgumentException {
-        if (price < 0) {
-            throw new IllegalArgumentException("Invalid value. Price can't be negative.");
-        }
-
-        this.price = price;
+    MusicalShow getMusicalShow() {
+        return this.performance.getMusicalShow();
     }
 
     boolean isSold() {
@@ -38,16 +36,12 @@ class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket {" +
-                "place = '" + this.place + '\'' +
-                ", price = " + this.price +
-                ", visitor = " + visitorToString() +
-                '}';
-    }
-
-    private String visitorToString() {
-        return isSold() ?
-                "Visitor {name = '" + this.visitor.getName() + "', phone = '" + visitor.getPhone() + "'}" :
-                "null";
+        return String.format("%s  |  %s  |  %s  |  Place %s  |  Prise: %.2f€",
+                this.getMusicalShow().getTitle(),
+                this.performance.getStartAt(),
+                this.performance.getHall().getTitle(),
+                this.place,
+                this.price
+        );
     }
 }

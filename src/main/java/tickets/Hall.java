@@ -1,5 +1,7 @@
 package tickets;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 public class Hall {
@@ -17,13 +19,28 @@ public class Hall {
         setSeatsPerRow(seatsPerRow);
     }
 
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getSeatsPerRow() {
+        return seatsPerRow;
+    }
+
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     private void setTitle(String title) {
-        //TODO: validation
-        this.title = title;
+        String trimmed = StringUtils.trimToNull(title);
+
+        if (trimmed == null || trimmed.length() < 2) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid name '%s'. Must contain at least 2 characters", title)
+            );
+        }
+
+        this.title = trimmed;
     }
 
     private void setNumberOfRows(int numberOfRows) throws IllegalArgumentException {
@@ -43,14 +60,14 @@ public class Hall {
         this.seatsPerRow = seatsPerRow;
     }
 
-    ArrayList<Ticket> generateTickets(double price) {
+    ArrayList<Ticket> generateTickets(Performance performance) {
         ArrayList<Ticket> tickets = new ArrayList<>();
         RowLabel[] rowLabels = RowLabel.values();
 
         for (int row = 1; row <= numberOfRows; row++) {
             for (int seat = 0; seat < seatsPerRow; seat++) {
                 String place = "" + row + rowLabels[seat];
-                tickets.add(new Ticket(place, price));
+                tickets.add(new Ticket(performance, place));
             }
         }
 

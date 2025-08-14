@@ -1,5 +1,7 @@
 package tickets;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 public class MusicalShow {
@@ -14,24 +16,27 @@ public class MusicalShow {
         return title;
     }
 
-    void setTitle(String title) {
-        //TODO: validation
-        this.title = title;
-    }
+    private void setTitle(String title) {
+        String trimmed = StringUtils.trimToNull(title);
 
-    public void createPerformance(Hall hall, String dateTime, double ticketPrice) {
-        Performance performance = new Performance(hall, dateTime, ticketPrice);
-        performances.add(performance);
-    }
-
-    public Performance getPerformance(String dateTime) {
-        for (Performance performance : performances) {
-            if (performance.getStartAt().equals(dateTime)) {
-                return performance;
-            }
+        if (trimmed == null || trimmed.length() < 2) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid name '%s'. Must contain at least 2 characters", title)
+            );
         }
 
-        throw new IllegalArgumentException("Performance with this start date doesn't exist. Please check data.");
+        this.title = trimmed;
+    }
+
+    Performance createPerformance(Hall hall, String dateTime, double ticketPrice) {
+        Performance performance = new Performance(this, hall, dateTime, ticketPrice);
+        performances.add(performance);
+
+        return performance;
+    }
+
+    public ArrayList<Performance> getPerformances() {
+        return performances;
     }
 
     @Override

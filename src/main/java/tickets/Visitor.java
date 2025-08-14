@@ -17,7 +17,7 @@ public class Visitor {
         setPhone(phone);
     }
 
-    String getName() {
+    public String getName() {
         return this.name;
     }
 
@@ -49,16 +49,21 @@ public class Visitor {
         this.phone = trimmed;
     }
 
-    public boolean buyTicket(Performance performance, String place) {
+    public Ticket buyTicket(Performance performance, String place) {
         Ticket ticket = performance.getTicket(place);
 
         if (ticket.bookFor(this)) {
             tickets.add(ticket);
-
-            return true;
+            return ticket;
         }
 
-        return false;
+        throw new IllegalArgumentException(
+                String.format("Booking is not possible. Place '%s' is already taken.", place)
+        );
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 
     @Override
@@ -66,7 +71,17 @@ public class Visitor {
         return "Visitor {" +
                 "name = '" + this.name + '\'' +
                 ", phone = '" + this.phone + '\'' +
-                ", tickets = " + this.tickets +
                 '}';
+    }
+
+    public String ticketsToString() {
+        StringBuilder str = new StringBuilder();
+        int index = 1;
+
+        for (Ticket ticket : this.tickets) {
+            str.append(String.format("%d) %s\n", index++, ticket));
+        }
+
+        return str.toString();
     }
 }

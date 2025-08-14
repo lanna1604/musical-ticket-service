@@ -5,18 +5,11 @@ import tickets.MusicalShow;
 import tickets.Performance;
 import tickets.TicketService;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public class AdminMenu extends Menu {
-    private final TicketService service;
-    private final Scanner scanner;
-
-    public AdminMenu(TicketService service, Scanner scanner) {
-        this.service = service;
-        this.scanner = scanner;
+    public AdminMenu(TicketService service) {
+        super(service);
     }
 
     public void start() {
@@ -38,7 +31,7 @@ public class AdminMenu extends Menu {
                 case "1" -> createHall();
                 case "2" -> createMusicalShow();
                 case "3" -> createPerformance();
-                default -> System.out.println(RED + "Invalid choice. Please try again." + RESET);
+                default -> printError("Invalid choice. Please try again.");
             }
         } while (!choice.equals("0"));
     }
@@ -59,11 +52,10 @@ public class AdminMenu extends Menu {
 
                 Hall hall = service.createHall(title, numberOfRows, seatsPerRow);
 
-                System.out.println(GREEN + "Hall created successfully." + RESET);
-                System.out.println(YELLOW + hall + RESET);
+                printCreationSuccess(hall);
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
+                printError(e.getMessage());
             }
         }
     }
@@ -78,18 +70,17 @@ public class AdminMenu extends Menu {
 
                 MusicalShow show = service.createMusicalShow(title);
 
-                System.out.println(GREEN + "Musical Show created successfully." + RESET);
-                System.out.println(YELLOW + show + RESET);
+                printCreationSuccess(show);
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
+                printError(e.getMessage());
             }
         }
     }
 
     private void createPerformance() {
         if (service.getHalls().isEmpty() || service.getShows().isEmpty()) {
-            System.out.println(RED + "You need at least one Hall and one Musical Show first!" + RESET);
+            printError("You need at least one Hall and one Musical Show first!");
             return;
         }
 
@@ -107,63 +98,13 @@ public class AdminMenu extends Menu {
                 System.out.print("Enter ticket price: ");
                 double price = Double.parseDouble(scanner.nextLine());
 
-                show.createPerformance(hall, dateTime, price);
-                System.out.println(GREEN + "Performance created successfully." + RESET);
-                System.out.println(YELLOW + show + RESET);
+                Performance performance = service.createPerformance(show, hall, dateTime, price);
+
+                printCreationSuccess(performance);
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println(RED + "Error: " + e.getMessage() + "\nPlease try again." + RESET);
+                printError(e.getMessage());
             }
         }
-    }
-
-    private MusicalShow selectShow() {
-        MusicalShow show;
-
-        ArrayList<MusicalShow> shows = service.getShows();
-        List<String> showTitles = shows.stream()
-                .map(MusicalShow::getTitle)
-                .toList();
-
-        while (true) {
-            try {
-                printMenuOptions("Please select a Musical Show", showTitles);
-                System.out.print("Your choice: ");
-                show = shows.get(scanner.nextInt());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println(RED + "Please enter a valid number." + RESET);
-                scanner.nextLine();
-            } catch (Throwable e) {
-                System.out.println(RED + "Item not found. Please try again." + RESET);
-            }
-        }
-
-        return show;
-    }
-
-    private Hall selectHall() {
-        Hall hall;
-
-        ArrayList<Hall> halls = service.getHalls();
-        List<String> hallsTitles = halls.stream()
-                .map(Hall::getTitle)
-                .toList();
-
-        while (true) {
-            try {
-                printMenuOptions("Please select a Hall", hallsTitles);
-                System.out.print("Your choice: ");
-                hall = halls.get(scanner.nextInt());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println(RED + "Please enter a valid number." + RESET);
-                scanner.nextLine();
-            } catch (Throwable e) {
-                System.out.println(RED + "Item not found. Please try again." + RESET);
-            }
-        }
-
-        return hall;
     }
 }

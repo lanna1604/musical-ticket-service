@@ -1,5 +1,7 @@
 package tickets;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,17 +11,19 @@ public class Performance {
     public final static String START_AT_PATTERN = "dd.MM.yyyy HH:mm";
     private final static DateTimeFormatter START_AT_FORMATTER = DateTimeFormatter.ofPattern(START_AT_PATTERN);
 
+    private MusicalShow musicalShow;
     private Hall hall;
     private LocalDateTime startAt;
     private double ticketPrice;
-    ArrayList<Ticket> tickets;
+    private ArrayList<Ticket> tickets;
 
-    Performance(Hall hall, String dateTime, double ticketPrice) {
+    Performance(MusicalShow musicalShow, Hall hall, String dateTime, double ticketPrice) {
+        this.musicalShow = musicalShow;
         this.hall = hall;
         setStartAt(dateTime);
         setTicketPrice(ticketPrice);
 
-        this.tickets = hall.generateTickets(this.ticketPrice);
+        this.tickets = hall.generateTickets(this);
     }
 
     private void setStartAt(String dateTime) {
@@ -45,8 +49,10 @@ public class Performance {
     }
 
     Ticket getTicket(String place) {
+        String trimmedPlace = StringUtils.trimToNull(place);
+
         for (Ticket ticket : tickets) {
-            if (ticket.getPlace().equals(place)) {
+            if (ticket.getPlace().equals(trimmedPlace)) {
                 return ticket;
             }
         }
@@ -54,17 +60,47 @@ public class Performance {
         throw new IllegalArgumentException("This place doesn't exist. Please check data.");
     }
 
+    public MusicalShow getMusicalShow() {
+        return musicalShow;
+    }
+
+    public Hall getHall() {
+        return this.hall;
+    }
+
     String getStartAt() {
-        return startAt.format(START_AT_FORMATTER);
+        return this.startAt.format(START_AT_FORMATTER);
+    }
+
+    public double getTicketPrice() {
+        return this.ticketPrice;
+    }
+
+    private ArrayList<Ticket> getAvailableTickets() { // TODO - refactoring using generics
+        ArrayList<Ticket> availableTickets = new ArrayList<>();
+
+        for (Ticket ticket : this.tickets) {
+            if (!ticket.isSold()) {
+                availableTickets.add(ticket);
+            }
+        }
+
+        return availableTickets;
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 
     @Override
     public String toString() {
-        return "Performance {" +
-                "hall = " + hall +
-                ", startAt = " + startAt +
-                ", ticketPrice = " + ticketPrice +
-                ", tickets = " + tickets +
-                '}';
+        return String.format("%s  |  del: %s  |  Hall: %s  |  Prise: %.2f€  |  %d of %d seat(s) available",
+                this.getStartAt(),
+                this.musicalShow.getTitle(),
+                this.hall.getTitle(),
+                this.ticketPrice,
+                getAvailableTickets().toArray().length,
+                this.tickets.toArray().length
+        );
     }
 }
